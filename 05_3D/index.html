@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>PHYSCI 70: Intro to Digital Fabrication</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <link href="../style.css" rel="stylesheet">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/arduino-light.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/arduino.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+</head>
+<body class="weekly">
+
+<div class="container-fluid">
+  <h3>Week 5: 3D Design & Printing </h3> <br> 
+  <div class="row">
+    <p>This week, we worked on 3D design. We tried out some scanners in class, and actually found that an iPhone scanner (which wasn't technically a scanner since it used the iPhone X's depth perception) had a much better result than the hand scanners, which would often induce weird results due to <a href= "https://bastiaanvanhengel.files.wordpress.com/2016/06/arduino_projects_book.pdf"> Arduino Projects Book</a>.</p>
+    <p>I mainly followed the motorized pinwheel instructions, as well as some instructions on transistors from the <a href= "https://roberthart56.github.io/SCFAB/SC_lab/Output_Devices/FET/index.html">course website.</a></p>
+    <img src="./projectbook.png" class="img-responsive margin" style="width: 50%">
+    <img src="./courseweb.png" class="img-responsive margin" style="width: 50%">
+    <p>This helped me figure out on our transistors which parts were the drain, source and ground. I then hooked up the circuit like in the project book, using a generator instead of a battery. I also included the diode, which is put in backwards, to protect the circuit since the motor generates a backwards current that can damage the circuit.</p>
+    <img src="./closeup.jpg" class="img-responsive margin" style="width: 50%">
+    <img src="./organized.jpg" class="img-responsive margin" style="width: 50%">
+    <img src="./landscape.jpg" class="img-responsive margin" style="width: 50%">
+    <p>The code I used was rather simple. I had some issues connecting the board to my computer, but I eventually figured out that it was a problem with the board and not with my laptop, and when I switched it out for another board, everything went well.</p>
+    <pre><code class="language-arduino">
+    const int switchPin = 2; //keep track of pins (digital)
+    const int motorPin = 9;
+    int switchState = 0; //keep track of the switch
+
+    void setup() {
+      // put your setup code here, to run once:
+      pinMode(motorPin, OUTPUT);
+      pinMode(switchPin, INPUT);
+    }
+
+    void loop() {
+      // put your main code here, to run repeatedly:
+      switchState = digitalRead(switchPin);
+      if (switchState == HIGH) {
+        digitalWrite(motorPin, HIGH);
+      }
+      else {
+        digitalWrite(motorPin, LOW);
+      }
+    }
+    </code></pre>
+    <p>The code just takes in </p>
+  </div>
+</div>
+
+</body>
+</html>
