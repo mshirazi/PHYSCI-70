@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>PHYSCI 70: Intro to Digital Fabrication</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <link href="../style.css" rel="stylesheet">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/arduino-light.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/arduino.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+</head>
+<body class="weekly">
+
+<div class="container-fluid">
+  <h3>Week 4: Arduino Programming </h3> <br> 
+  <div class="row">
+    <p>This week, I continued on my gear journey. I wanted to find a way to hook up sensors to my gear, to give the user control over the gear turning on and over the speed. </p>
+    <p>I began by hooking up a basic capacitance sensor to my circuit. At first, I was a little concerned about being electrocuted, but Victoria assured me there was nothing to fear up to 50V, and so I valiantly treked on. I had a bit of trouble making it work in my circuit, but I eventually figured out that I had to hook my circuit up to a generator for my capacitance sensor to work, and that it wouldn't just work off of the power that my computer supplied.</p>
+    <img src="./circuit.jpg" class="img-responsive margin" style="width: 50%">
+    <p>I also ran into a weird situation, where the pressing ground would only work when I was standing on the metal part of the ground. I think it had something to do with grounding, and for Victoria it only working when she touched the chair.</p>
+    <p>The code I used was rather just a modified version of the code from Arduino week. I just changed the condition to be dependent on whether the value of the sensor was greater than 20.</p>
+    <pre><code class="language-arduino">
+#include <CapacitiveSensor.h>
+CapacitiveSensor Sensor = CapacitiveSensor(7,8);
+
+const int switchPin = 2; //keep track of pins (digital)
+const int motorPin = 9;
+int switchState = 0; //keep track of the switch
+
+void setup() {
+  // put your setup code here, to run once:
+  pinMode(motorPin, OUTPUT);
+  pinMode(switchPin, INPUT);
+  Serial.begin(9600);
+
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  long sensorValue = Sensor.capacitiveSensor(300);      //Change the number of samples to get the required timing and sensitivity.
+  switchState = digitalRead(switchPin);
+  Serial.println(sensorValue);
+  
+  if (switchState == HIGH || sensorValue > 530) {
+    digitalWrite(motorPin, HIGH);
+    }
+    else {
+      digitalWrite(motorPin, LOW);
+    }
+
+}
+    </code></pre>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/rIqXFeRe5wk" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <p>The sensor measures around 50 when I am not touching it, 90 when it is close, 130 for a light touch, and in the 200s when I firmly touch it. I wanted a larger signal to have more precision, however, so I switched from a 1mOhm resistor to a 10mOhm resistor. I also changed my code, to make it change speed as I approached it.</p>
+    <pre><code class="language-arduino">
+
+#include <CapacitiveSensor.h>
+CapacitiveSensor Sensor = CapacitiveSensor(7,8);
+
+const int switchPin = 2; //keep track of pins (digital)
+const int motorPin = 9;
+int switchState = 0; //keep track of the switch
+int N=1; //number to average
+float sensorAve = 0;
+int value = 0;
+
+void setup() {
+  // put your setup code here, to run once:
+  pinMode(motorPin, OUTPUT);
+  pinMode(switchPin, INPUT);
+  Serial.begin(9600);
+  
+
+}
+
+void loop() {
+  long int sum = 0;
+  // put your main code here, to run repeatedly:
+  //for (int i=1; i<N+1; i++){
+  int sensorValue = Sensor.capacitiveSensor(200);
+  switchState = digitalRead(switchPin);
+  value = (log(sensorValue) - 4.5)/5.5*255;
+  if (value < 0) {
+    value = 0;
+  }
+  if (value > 255) {
+    value = 255;
+  }
+  analogWrite(motorPin, value);
+
+
+}
+    </code></pre>
+    <p>Something I'd like to add on is a calibration period at the beginning, since the values of the capacitance sensor seem to vary a lot.</p>
+  </div>
+</div>
+
+</body>
+</html>
