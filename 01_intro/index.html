@@ -10,27 +10,44 @@
   <link href="../style.css" rel="stylesheet">
 </head>
 <body class="weekly">
-
+<header>
+  <h1 class="logo">PS70: Intro to Digital Fabrication</h1>
+  <input type="checkbox" id="nav-toggle" class="nav-toggle">
+  <nav>
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="./about.html">About</a></li>
+      <li><a href="./00_final_project/index.html">Final Project</a></li>
+    </ul>
+  </nav>
+  <label for="nav-toggle" class="nav-toggle-label">
+    <span></span>
+  </label>
+</header>
 <div class="container-fluid">
-  <h3>Week 1: Introduction </h3> <br> 
   <div class="row">
+  <h3 class='weektitre'>Week 1: Introduction </h3> <br>
+  
+    <div class="column-sm">
+    </div>
+    <div class="column-lg">
     
       <p>This week, we worked on creating basic ciruits. This was my first time working with a breadboard and an Adafruit Itsy Bitsy, so I focused on just making a basic circuit. I had some trouble at first making the circuit since I got confused about which ways the breadboard was connected. I was trying to make following circuit:</p>
 
-      <img src="./circuit.jpg" class="img-responsive margin" style="width:20%" alt="circuit diagram">
+      <img src="./circuit.jpg" class="img-responsive margin" style="width:60%" alt="circuit diagram">
 
       <p>Once I got the circuit working, I played around with some small variations	in the way the circuit was strung together to see how it affected the circuit. When I removed the resistor, I noticed that the light got a lot brighter. When I measured the voltage around the diode without the resistor, the value was larger than the tension with the resistor. </p>
 
       <p>The light with the resistor</p>
 
-      <img src="./dim.jpg" class="img-responsive margin" style="width:20%" alt="circuit diagram">
+      <img src="./dim.jpg" class="img-responsive margin" style="width:60%" alt="circuit diagram">
 
       <p>The light without the resistor</p>
 
-      <img src="./bright.jpg" class="img-responsive margin" style="width:20%" alt="circuit diagram">
+      <img src="./bright.jpg" class="img-responsive margin" style="width:60%" alt="circuit diagram">
 
       <p>The tension measured with the multi-meter around the diode without the resistor was about 3.3V, and with was 2.7V, while the tension around the resistor was 0.6V.</p>
-
+    </div>
   </div>
 </div>
 

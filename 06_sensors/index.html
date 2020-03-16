@@ -11,21 +11,39 @@
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/arduino-light.min.css">
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/arduino.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=css&amp;skin=sons-of-obsidian"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 </head>
 <body class="weekly">
-
+<header>
+  <h1 class="logo">PS70: Intro to Digital Fabrication</h1>
+  <input type="checkbox" id="nav-toggle" class="nav-toggle">
+  <nav>
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="./about.html">About</a></li>
+      <li><a href="./00_final_project/index.html">Final Project</a></li>
+    </ul>
+  </nav>
+  <label for="nav-toggle" class="nav-toggle-label">
+    <span></span>
+  </label>
+</header>
+<br>
+<br>
 <div class="container-fluid">
-  <h3>Week 4: Arduino Programming </h3> <br> 
   <div class="row">
+    <div class="column-sm">
+  <h3>Week 4: Arduino Programming </h3> <br> 
+  </div>
+  <div class="column-lg">
     <p>This week, I continued on my gear journey. I wanted to find a way to hook up sensors to my gear, to give the user control over the gear turning on and over the speed. </p>
     <p>I began by hooking up a basic capacitance sensor to my circuit. At first, I was a little concerned about being electrocuted, but Victoria assured me there was nothing to fear up to 50V, and so I valiantly treked on. I had a bit of trouble making it work in my circuit, but I eventually figured out that I had to hook my circuit up to a generator for my capacitance sensor to work, and that it wouldn't just work off of the power that my computer supplied.</p>
     <img src="./circuit.jpg" class="img-responsive margin" style="width: 50%">
     <p>I also ran into a weird situation, where the pressing ground would only work when I was standing on the metal part of the ground. I think it had something to do with grounding, and for Victoria it only working when she touched the chair.</p>
     <p>The code I used was rather just a modified version of the code from Arduino week. I just changed the condition to be dependent on whether the value of the sensor was greater than 20.</p>
-    <img src="./calibration.png" class="img-responsive margin" style="width: 50%">
 
-    <pre><code class="language-arduino">
+    <pre class="prettyprint"><code class="language-arduino">
 #include <CapacitiveSensor.h>
 CapacitiveSensor Sensor = CapacitiveSensor(7,8);
 
@@ -57,8 +75,12 @@ void loop() {
 }
     </code></pre>
     <iframe width="560" height="315" src="https://www.youtube.com/embed/rIqXFeRe5wk" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-    <p>The sensor measures around 50 when I am not touching it, 90 when it is close, 130 for a light touch, and in the 200s when I firmly touch it. I wanted a larger signal to have more precision, however, so I switched from a 1mOhm resistor to a 10mOhm resistor. I also changed my code, to make it change speed as I approached it.</p>
-    <pre><code class="language-arduino">
+    <p>The sensor measures around 50 when I am not touching it, 90 when it is close, 130 for a light touch, and in the 200s when I firmly touch it. I wanted a larger signal to have more precision, however, so I switched from a 1mOhm resistor to a 10mOhm resistor.</p>
+    <p>After these changes, I calibrated it by starting my hand at 20cm away (t = 100) and slowly moving it forwards until I touched the piece of copper.(until t = 400) It obivously isn't the most precise method of calibration, but it was good enough for my purposes. The curve was a little too exponential for my taste, since I wanted a linear variation with linear movements of my hand, and so I took the log in my code.</p>
+    <img src="./calibration.png" class="img-responsive margin" style="width: 50%">
+
+    <p> I also changed my code, to make it change speed as I approached it.</p>
+    <pre class="prettyprint"><code class="language-arduino">
 
 #include <CapacitiveSensor.h>
 CapacitiveSensor Sensor = CapacitiveSensor(7,8);
@@ -98,6 +120,7 @@ void loop() {
 }
     </code></pre>
     <p>Something I'd like to add on is a calibration period at the beginning, since the values of the capacitance sensor seem to vary a lot.</p>
+  </div>
   </div>
 </div>
 

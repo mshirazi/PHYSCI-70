@@ -10,18 +10,40 @@
   <link href="../style.css" rel="stylesheet">
 </head>
 <body class="weekly">
-
+<header>
+  <h1 class="logo">PS70: Intro to Digital Fabrication</h1>
+  <input type="checkbox" id="nav-toggle" class="nav-toggle">
+  <nav>
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="./about.html">About</a></li>
+      <li><a href="./00_final_project/index.html">Final Project</a></li>
+    </ul>
+  </nav>
+  <label for="nav-toggle" class="nav-toggle-label">
+    <span></span>
+  </label>
+</header>
+<br>
+<br>
 <div class="container-fluid">
-  <h3>Week 3: 2D Fabrication </h3> <br> 
   <div class="row">
+    <div class="column-sm">
+  <h3>Week 3: 2D Fabrication </h3> <br> 
+  </div>
+  <div class="column-lg">
     <p>This week, I tried to make a kinetic sculpture. I began with the humble goal of putting two gears together and making them move with a motor, and ended with the even more humble result of two gears that did not, in fact, move with a motor.</p>
-    <p>It began with the sketching uo of the two gears in Fusion 360, a task that soon proved pretty impossible. I was trying to use the feature where you import from the catalogue of a parts manufacturer, but they didn't really have any range in their gear sizes, and I had to scale the gears. What I did not realize until later was that gears don't necessarily fit together once you start scaling.</p>
-    <p>I read the very useful resource <a href="https://makezine.com/2010/06/28/make-your-own-gears/">that was a post from the Make blog</a>, which detailed how to make the calculations to guarantee that gears fit together. I particularily appreciated the following table:</p>
+    <p>It began with the sketching up of the two gears in Fusion 360, a task that soon proved pretty impossible. I was trying to use the feature where you import from the catalogue of a parts manufacturer 
+    (Mcmaster Carr), but they didn't really have any range in their gear sizes, and I had to scale the gears. What I didn't realize until later was that gears don't necessarily fit together once you start scaling.</p>
+    <p>I read the very useful resource <a href="https://makezine.com/2010/06/28/make-your-own-gears/">that was a post from the Make blog</a>, which detailed how to make the calculations to guarantee that gears fit together. The most important piece of information was that the diametral pitch of the gears must remain constant for two gears to mesh. I particularily appreciated the following table:</p>
     <img src="./table.jpg" class="img-responsive margin" style="width: 30%">
-    <p>This helped me figure out how to draft the gears in inkscape, and after then the gears were printed! The only problem after then was figuring out how to get the motor mounted to one of the gears, something that I am still working on...</p>
+    <p>I used the formulas to calculate how many teeth my gear should have for a specific radius (or rather which number of teeth would get me closest to my desired radius). This helped me figure out how to draft the gears in inkscape (with their built in gear module), and after then the gears were printed! The only problem after then was figuring out how to get the motor mounted to one of the gears, something that I am still working on...</p>
     <img src="./fail.jpg" class="img-responsive margin" style="width: 30%">
+    <p>Here is some footage from next week, when it finally starts working! I had to use some rubber tubing to couple the motor with the gear and change the motor that I was using to a DC motor.</p>
 
-
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/9qyctV7FyKw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <a href="./gears.zip" download="box">Download gear .dxf files</a>
+</div>
   </div>
 </div>
 

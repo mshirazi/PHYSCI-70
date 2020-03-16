@@ -37,7 +37,7 @@ body.home {
 }
 
 body.weekly {
-	background: rgba(246,213,92, .2);
+/*	background: rgb(32,99,155,.2); */
 }
 
 h1 {
@@ -285,6 +285,25 @@ nav a:hover {
   	display: inline-block;
 }
 
+.row {
+  display: flex;
+}
+
+.column-sm {
+  flex: 30%;
+  padding: 10px;
+
+}
+
+.weektitre {
+  text-decoration: bold;
+
+}
+
+.column-lg {
+  flex: 70%;
+  padding: 20px;
+}
 /*.weeklink .box:hover {
   	opacity:1;
 }

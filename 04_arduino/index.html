@@ -11,13 +11,31 @@
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/arduino-light.min.css">
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/arduino.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=css&amp;skin=sons-of-obsidian"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 </head>
 <body class="weekly">
-
+<header>
+  <h1 class="logo">PS70: Intro to Digital Fabrication</h1>
+  <input type="checkbox" id="nav-toggle" class="nav-toggle">
+  <nav>
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="./about.html">About</a></li>
+      <li><a href="./00_final_project/index.html">Final Project</a></li>
+    </ul>
+  </nav>
+  <label for="nav-toggle" class="nav-toggle-label">
+    <span></span>
+  </label>
+</header>
+<br>
+<br>
 <div class="container-fluid">
-  <h3>Week 4: Arduino Programming </h3> <br> 
   <div class="row">
+  <div class="column-sm">
+  <h3>Week 4: Arduino Programming </h3> </div> <br> 
+  <div class="column-lg">
     <p>This week was about redemption! My goal was to make the gears from last week work, and with a circuit hooked up to it (so that the motor goes when you press the button!). I mostly followed the instructions from the <a href= "https://bastiaanvanhengel.files.wordpress.com/2016/06/arduino_projects_book.pdf"> Arduino Projects Book</a>.</p>
     <p>I mainly followed the motorized pinwheel instructions, as well as some instructions on transistors from the <a href= "https://roberthart56.github.io/SCFAB/SC_lab/Output_Devices/FET/index.html">course website.</a></p>
     <img src="./projectbook.png" class="img-responsive margin" style="width: 50%">
@@ -27,7 +45,7 @@
     <img src="./organized.jpg" class="img-responsive margin" style="width: 50%">
     <img src="./landscape.jpg" class="img-responsive margin" style="width: 50%">
     <p>The code I used was rather simple. I had some issues connecting the board to my computer, but I eventually figured out that it was a problem with the board and not with my laptop, and when I switched it out for another board, everything went well.</p>
-    <pre><code class="language-arduino">
+    <pre class="prettyprint"><code>
     const int switchPin = 2; //keep track of pins (digital)
     const int motorPin = 9;
     int switchState = 0; //keep track of the switch
@@ -49,7 +67,11 @@
       }
     }
     </code></pre>
-    <p>The code just takes in </p>
+    <p>Code formatted with Google prettify, Sons of Obsidian! But it isn't quite compatible with arduino.</p>
+    <p>The code just takes in the correct pins, sets the motor pin to an output pin and the switch pin to an input pin, then constantly reads the switch pin. The switch pin returns HIGH if it is being pressed and LOW if it isn't. Then a simple if statement makes the motor turn if the switch is being pressed.</p>
+
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/9qyctV7FyKw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  </div>
   </div>
 </div>
 
