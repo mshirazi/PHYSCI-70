@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>PHYSCI 70: Intro to Digital Fabrication</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <link href="../style.css" rel="stylesheet">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/arduino-light.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/arduino.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=css&amp;skin=sons-of-obsidian"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+</head>
+<body class="weekly">
+<header>
+  <h1 class="logo">PS70: Intro to Digital Fabrication</h1>
+  <input type="checkbox" id="nav-toggle" class="nav-toggle">
+  <nav>
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="./about.html">About</a></li>
+      <li><a href="./00_final_project/index.html">Final Project</a></li>
+    </ul>
+  </nav>
+  <label for="nav-toggle" class="nav-toggle-label">
+    <span></span>
+  </label>
+</header>
+<br>
+<br>
+<div class="container-fluid">
+  <div class="row">
+    <div class="column-sm">
+  <h3>Week 8: Output Devices </h3> <br> 
+  </div>
+  <div class="column-lg">
+    <p>I started out the week by just testing out some of the different output devices. All the circuits worked pretty well:</p>
+    <h5>DC motor with H-bridge</h5>
+    <img src="./images/examples/totaldc.jpg" class="img-responsive margin" style="width: 50%">
+    <img src="./images/examples/dchookup.jpg" class="img-responsive margin" style="width: 50%">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/j0naiYcyRts" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <h5>Buzzer</h5>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/2mxpasONjg8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <h5>Basic Stepper Setup</h5>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/vS9HCMX0EKc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <br>
+    <p>My goal was to hook up the servo and the stepper together, to try to get 2 d.o.f. and to be able to create polar motion. I started by getting them both on the same program (since exactly where they moved to wasn't really important):</p>
+    <pre class="prettyprint"><code class="language-arduino">
+#include <Stepper.h>
+#include <Servo.h>
+
+const int stepsPerRevolution = 200;  // change this to fit the number of steps per revolution
+// for your motor
+int angle = 0;
+int sm = 1;
+int i = 0;
+// initialize the stepper library on pins 8 through 11:
+Stepper myStepper(stepsPerRevolution, 8, 9, 10, 11);
+Servo myservo;  // create servo object to control a servo
+
+void setup() {
+  myservo.attach(6);  // attaches the servo on pin 6 to the servo object
+  // set the speed at 60 rpm:
+  myStepper.setSpeed(60);
+  // initialize the serial port:
+  Serial.begin(9600);
+}
+
+void loop() {
+  for (i = 0; i < 200; i++) {
+    myservo.write(i); // commands the servo to jump to its middle position (90 degrees)
+    delay(30);
+    // step one revolution  in one direction:
+  Serial.println("clockwise");
+  myStepper.step(sm);
+  }
+  for (i = 200; i > 0; i--) {
+    myservo.write(i); // commands the servo to jump to its middle position (90 degrees)
+    delay(30);
+    Serial.println("counterclockwise");
+  myStepper.step(-sm);
+  }
+    }
+    </code></pre>
+    <p>I then hooked up a circuit with both of the pieces:</p>
+    <img src="./images/servoinbase.jpg" class="img-responsive margin" style="width: 50%">
+    <img src="./images/servocouple.jpg" class="img-responsive margin" style="width: 50%">
+    <img src="./images/hookedupservo.jpg" class="img-responsive margin" style="width: 50%">
+    <img src="./images/tapeddown.jpg" class="img-responsive margin" style="width: 50%">
+
+    <p> My next goal was to create a gear, to convert the motion of the stepper motor into horizontal motion. I would have just laser cut a gear had I been in the lab, which would have worked a lot better, and would have been a lot easier. Unfortunately, that wasn't an option, and so I had to draw them out myself. I used the following <a href = "https://www.instructables.com/id/How-to-make-gears-easily/">tutorial.</a></p>
+    <img src="./images/gearggb-page-001.jpg" class="img-responsive margin" style="width: 50%">
+    <img src="./images/linegear-page-001.jpg" class="img-responsive margin" style="width: 50%">
+    <img src="./images/brownie.jpg" class="img-responsive margin" style="width: 50%">
+    <img src="./images/lasagna.jpg" class="img-responsive margin" style="width: 50%">
+    <p>I used a lot of hot glue when putting them together, in order to bulk up the gear.</p>
+    <img src="./images/wholething.jpg" class="img-responsive margin" style="width: 50%">
+    <p>Here, just the servo is moving:</p>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/G1goa-05mMU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <p>Here, the stepper and the servo are moving independently of each other.</p>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/vveWWG-7OgI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <p>Finally, I hooked up the 'arm' (although I accidentally didn't connect it to the servo, it theoretically should rotate with the servo, which I can just do by attaching it to the base of the stepper motor instead of attaching it to the base of the servo):</p>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/fbVGSIMG_CY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <p>Clearly it isn't perfect, but I think that it can easily be improved upon in the coming weeks!</p>
+  </div>
+  </div>
+</div>
+
+</body>
+</html>
