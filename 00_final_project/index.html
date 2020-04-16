@@ -10,19 +10,47 @@
   <link href="../style.css" rel="stylesheet">
 </head>
 <body>
-
+<header>
+  <h1 class="logo">PS70: Intro to Digital Fabrication</h1>
+  <input type="checkbox" id="nav-toggle" class="nav-toggle">
+  <nav>
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="./about.html">About</a></li>
+      <li><a href="./00_final_project/index.html">Final Project</a></li>
+    </ul>
+  </nav>
+  <label for="nav-toggle" class="nav-toggle-label">
+    <span></span>
+  </label>
+</header>
+<br>
+<br>
 <div class="container-fluid">
-  <h3>Final Project Proposition</h3> <br> 
+  
   <div class="row">
+    <div class="column-sm">
+    <h3>Final Project Proposition: The Pasta Machine</h3> 
+    </div>
+    <div class="column-lg">
+      <img src="./plans.png" class="img-responsive margin" style="width: 100%">
     
-      <p>For my final project, I wanted to make something that would incorporate a lot of physical fabrication with some digital aspects. I'm not very sure at all of what I would like to do, but I was thinking one of a couple of things:</p>
-
+    <h3>Some considerations:</h3>
       <ul>
-        <li>A clip that would attach to a plant pot and monitor when you should water your plants (either by counting down the days or by monitoring the soil humdity, if that's even possible?)</li>
-        <li>I was also thinking of trying to make a pen that, using some sort of location and motion sensors, would be able to sense what you are writing and redraw it digitally, no matter what you are using it with or on.</li>
-        <li>My final idea was to make some sort of little robot whose only ability would be to get back up when you knock it over!</li>
+        <li>To make the gears, I'm thinking that I'll 3D print them - they need to be pretty sturdy and they're large enough that I'm not concerned about precision.</li>
+        <li>I'm still trying to work out the horizontal motion of the mobile roller. Maybe if I find a way to really fasten it at a right angle to a joint on one side, and then my moving one side I'll be able to move the entire thing, but this seems kind of difficult.</li>
+        <li>Hopefully, I'll be able to hook it up to an app, and make it so that you can plug in the machine. Then, you can write on the app what thickness you are starting with, what you want to end with, and the machine will automatically adjust in between. Optimally, it'd be able to detect when dough is being fed through it, but that seems like something I'd add in later. Another option is obviously to just have the user click a button every time they want to adjust (some sort of up/down button to control the precision by set increments, and an option to type in the exact thickness). Probably easier to start with this.</li>
+        <li>Again, the horizontal motion is going to be a pain. I could use capacitance sensors to try to implement the distance measuring, but it might be easier to just calibrate whatever method I'm using and work off of that.</li>
+        <li>I've been looking at other pasta machines, and a lot of them have 'scrapers' that help clean the rollers of dough as they turn. I think I might try to make some, maybe out of thin sheets of metal, but that will obviously be difficult to manipulate with my current setup.</li>
       </ul>
-
+<h3>Materials:</h3>
+<ul>
+  <li>I'm using 1 1/4 inch PVC pipes for the roller. Optimally, it'd be stainless steel or copper or something more foodsafe, but I can't really manipulate that.</li>
+  <li>The gear parts will be 3D printed, and there are 4 gears: one attached to the motor (hoping to incorporate the motor coupler and the gear in the same 3D printed piece), and three others. They need to mesh in groups of 2. They will all be spur gears, for simplicity (I considered helical gears but that also seems too complicated, and I want a lot of flexibility with the mesh.)</li>
+  <li>I'm going to use 2 blocks of pine for the sides, it will be easy to drill holes and attach components. And easy to find!</li>
+  <li>I'll be using some tire rods to hold the sides together, along with some nuts. Not necessarily the most beautiful solution (it'd be nicer to take a rod of stainless, size it exactly, thread it, and drill a screw into it to fasten), but it's easy!</li>
+</ul>
+</div>
   </div>
 </div>
 

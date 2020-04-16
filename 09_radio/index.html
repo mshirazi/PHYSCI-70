@@ -82,7 +82,7 @@ int switchpress = 0;
 int next = 3;
 int index = 0;
 int buzzerPin = 10;
-int tempdata[] = {0,0};
+String tempdata = "";
 
 Servo myservo;
 
@@ -130,7 +130,7 @@ void loop() {
     if (digitalRead(next) == LOW)  // check if button was pressed
   {
     switchpress++;                  // increment buttonPresses count
-    delay(2100);                       // debounce switch
+    delay(250);                       // debounce switch
     Serial.print("numer of times you switched ");
     Serial.println(switchpress);
   }
@@ -138,7 +138,7 @@ void loop() {
 if (digitalRead(switchPin) == LOW)  // check if button was pressed
   {
     buttonPresses[switchpress]++;                  // increment buttonPresses count
-    delay(2100);                       // debounce switch
+    delay(250);                       // debounce switch
     Serial.print("numer of times you pressed the button ");
     Serial.println(buttonPresses[0]);
         Serial.println(buttonPresses[1]);
@@ -160,10 +160,9 @@ if (digitalRead(switchPin) == LOW)  // check if button was pressed
       Serial.print("received ");
       
       //Serial.println(rec_data);
-      tempdata[0] = buttonPresses[0] % 2;
-      tempdata[1] = buttonPresses[1] % 2;
+      tempdata = String(buttonPresses[0] % 2) + String(buttonPresses[1] % 2);
       if (rec_data == tempdata){
-        tone(buzzerPin, 1000, 1000);
+        tone(buzzerPin, 1000, 500);
   delay(1000);
       }
       //angle = map(rec_data, 0, 255, 0, 180); 
@@ -177,7 +176,7 @@ if (digitalRead(switchPin) == LOW)  // check if button was pressed
     </code></pre>
     <p>This is the code for the transmitter (the one who initializes the game):</p>
         <pre class="prettyprint"><code class="language-arduino">
-          /*
+         /*
 * Simple sketch for nRF24L01+ radios.  Transmit side.
 *
 *Specifically for  use with ATSAMD11C14 board using 
@@ -200,7 +199,7 @@ int next = 25;
 RF24 radio(8,15);      //CE and CS pins.  This is the change needed when you change to another board.
 
 byte addresses[][6] = {"1Node","2Node"};
-byte data[] = {0,0}; 
+String data = ""; 
 
 void setup() {
  // Serial.begin(0);
@@ -237,7 +236,7 @@ void loop() {
     if (digitalRead(next) == HIGH)  // check if button was pressed
   {
     switchpress++;                  // increment buttonPresses count
-    delay(1000);                       // debounce switch
+    delay(500);                       // debounce switch
     Serial.print("numer of times you switched ");
     Serial.println(switchpress);
   }
@@ -245,7 +244,7 @@ void loop() {
 if (digitalRead(switchPin) == HIGH)  // check if button was pressed
   {
     buttonPresses[switchpress]++;                  // increment buttonPresses count
-    delay(1000);                      // debounce switch
+    delay(500);                      // debounce switch
     Serial.print("numer of times you pressed the button ");
     Serial.println(buttonPresses[0]);
     Serial.println(buttonPresses[1]);
@@ -260,12 +259,10 @@ if (switchpress > 2):{
    if (!radio.write( &data, 1 )){
   //  Serial.println(F("failed"));
    }
-data[0] = buttonPresses[0] % 2;
-data[1] = buttonPresses[1] % 2;
+data= String(buttonPresses[0] % 2) + String(buttonPresses[1] % 2);
 radio.write(data);
 Serial.print("Sent ");
-Serial.println(data[0]);
-Serial.println(data[0]);
+Serial.println(data);
 }
    
 

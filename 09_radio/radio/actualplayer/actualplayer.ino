@@ -16,7 +16,7 @@ int switchpress = 0;
 int next = 3;
 int index = 0;
 int buzzerPin = 10;
-int tempdata[] = {0,0};
+String tempdata = "";
 
 Servo myservo;
 
@@ -94,8 +94,7 @@ if (digitalRead(switchPin) == LOW)  // check if button was pressed
       Serial.print("received ");
       
       //Serial.println(rec_data);
-      tempdata[0] = buttonPresses[0] % 2;
-      tempdata[1] = buttonPresses[1] % 2;
+      tempdata = String(buttonPresses[0] % 2) + String(buttonPresses[1] % 2);
       if (rec_data == tempdata){
         tone(buzzerPin, 1000, 500);
   delay(1000);

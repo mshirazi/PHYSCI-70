@@ -21,7 +21,7 @@ int next = 25;
 RF24 radio(8,15);      //CE and CS pins.  This is the change needed when you change to another board.
 
 byte addresses[][6] = {"1Node","2Node"};
-byte data[] = {0,0}; 
+String data = ""; 
 
 void setup() {
  // Serial.begin(0);
@@ -81,12 +81,10 @@ if (switchpress > 2):{
    if (!radio.write( &data, 1 )){
   //  Serial.println(F("failed"));
    }
-data[0] = buttonPresses[0] % 2;
-data[1] = buttonPresses[1] % 2;
+data= String(buttonPresses[0] % 2) + String(buttonPresses[1] % 2);
 radio.write(data);
 Serial.print("Sent ");
-Serial.println(data[0]);
-Serial.println(data[0]);
+Serial.println(data);
 }
    
 
