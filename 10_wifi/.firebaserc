@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "esp32-216ab"
+    "default": "esp32-216ab",
+    "staging": "esp32-216ab"
   }
 }

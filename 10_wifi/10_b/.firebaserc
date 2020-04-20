@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "default": "esp32-216ab",
+    "staging": "sourdough-595bf"
+  }
+}
