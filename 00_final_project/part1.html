@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>PHYSCI 70: Intro to Digital Fabrication</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <link href="../style.css" rel="stylesheet">
+</head>
+<body>
+<header>
+  <h1 class="logo">PS70: Intro to Digital Fabrication</h1>
+  <input type="checkbox" id="nav-toggle" class="nav-toggle">
+  <nav>
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="./about.html">About</a></li>
+      <li><a href="./00_final_project/index.html">Final Project</a></li>
+    </ul>
+  </nav>
+  <label for="nav-toggle" class="nav-toggle-label">
+    <span></span>
+  </label>
+</header>
+<br>
+<br>
+<div class="container-fluid">
+  
+  <div class="row">
+    <div class="column-sm">
+    <h3>The Pasta Machine I: A Basic DC Motor</h3> 
+    </div>
+    <div class="column-lg">
+    
+    <p>This would have been a lot easier if the ESP32 had a built in analogwrite(). Unfortunately, it doesn't, so I used the following video to try to figure it out:</p>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/ZIhKmUGSpIo" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <p>The video is courtesy of Saravanan AL!</p>
+    <p>They use the ledc functions to replace an analog write. Unfortunately, I got errors when I tried to use it (ledcsetup was not declared in this scope) and there wasn't that much documentation about how to fix the error, so I tried a library called AnalogWrite for ESP32 instead, which worked wonderfully!</p>
+    <p>At this point, my code looked like this:</p>
+    <pre class="prettyprint"><code class="language-arduino">
+#include <analogWrite.h>
+#include <WiFi.h>                                 // esp32 library
+#include <FirebaseESP32.h>                        // firebase library
+
+
+#define FIREBASE_HOST "pastamachine-a1af1.firebaseio.com"  // the project name address from firebase id
+#define FIREBASE_AUTH "cVK2a9h78168CPmRaXcoFcx0oLA3Ad0A0a5UFXwT"                          // the secret key generated from firebase
+#define WIFI_SSID "exede-5184"                                // input your home or public wifi name
+#define WIFI_PASSWORD "E0AF8CD047"                            // password of wifi ssid
+
+String fireString = "";                                          // led status received from firebase
+int ledpin = 4;
+int dcpin = 32;
+int speeds = 255;
+//Define FirebaseESP32 data object
+FirebaseData firebaseData;
+FirebaseData firebaseData2;
+
+
+void setup() {
+  Serial.begin(9600);
+  delay(1000);
+  pinMode(ledpin, OUTPUT);
+  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);                          // try to connect with wifi
+  pinMode(dcpin, OUTPUT);
+  Serial.print("Connecting to ");
+  Serial.print(WIFI_SSID);
+  while (WiFi.status() != WL_CONNECTED) {
+    Serial.print(".");
+    delay(500);
+  }
+
+  Serial.println();
+  Serial.print("Connected to ");
+  Serial.println(WIFI_SSID);
+  Serial.print("IP Address is : ");
+  Serial.println(WiFi.localIP());                                // print local IP address
+  Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);                  // connect to firebase
+  Firebase.reconnectWiFi(true);
+  //Firebase.set(firebaseData, "/LED_STATUS", "OFF");              // set initial string of "OFF"
+}
+
+void loop() {
+
+  Firebase.get(firebaseData, "/LED_STATUS");                     // get led status input from firebase
+  fireString = firebaseData.stringData();                        // change to e.g. intData() or boolData()
+  Firebase.get(firebaseData2, "/speed");
+  speeds = firebaseData2.intData();
+  Serial.println(fireString);
+  analogWrite(dcpin, speeds);
+  if (fireString == "ON") {                    // compare the input of led status received from firebase
+    Serial.println("Led Turned ON");
+    digitalWrite(ledpin, HIGH);                // make output led ON
+  }
+
+  else if (fireString == "OFF") {              // compare the input of led status received from firebase
+    Serial.println("Led Turned OFF");
+    digitalWrite(ledpin, LOW);                 // make output led OFF
+  }
+
+  else {
+    Serial.println("Please send ON/OFF");
+  }
+
+  delay(1000);                                 // not strictly necessary
+}
+</code></pre>
+<p>Using this code, I can manipulate the speed in the firebase database, anywhere from 0 to 255. I also tried constructing a pasta machine hull out of cardboard, but it was pretty unsuccessful...</p>
+<p>Then I started playing around with JS and HTML to try to figure out how I could get a user to input a speed.</p>
+    <pre class="prettyprint"><code class="language-arduino">
+      <!doctype html>
+<html class="no-js" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PS70</title>
+</head>
+
+<body>
+  <button id="turn-on" name="turnon">Turn On </button>
+  <button id="turn-off" name="turnoff">Turn Off </button>
+  <p id = "demo"></p>
+  <input type="text" id="myInput" oninput="myFunction()">
+  <button id="submit" name="sumbit">submit </button>
+
+
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="/__/firebase/7.14.0/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+    <!-- include only the Firebase features as you need -->
+    <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-database.js"></script>
+    <script defer src="/__/firebase/7.14.0/firebase-auth.js"></script>
+    <script defer src="/__/firebase/7.14.0/firebase-database.js"></script>
+    <script defer src="/__/firebase/7.14.0/firebase-messaging.js"></script>
+    <script defer src="/__/firebase/7.14.0/firebase-storage.js"></script>
+    <!-- initialize the SDK after all desired features are loaded -->
+<script src="/__/firebase/7.14.0/firebase-analytics.js"></script>
+
+<!-- Initialize Firebase -->
+<script defer src="/__/firebase/init.js"></script>
+
+  <script>
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+  apiKey: "AIzaSyBm7IRrCQpf4A_-Vnqe7vXsQgiIzO-cUoo",
+  authDomain: "esp32-216ab.firebaseapp.com",
+  databaseURL: "https://esp32-216ab.firebaseio.com/",
+  projectId: "esp32-216ab",
+  storageBucket: "esp32-216ab.appspot.com",
+  messagingSenderId: "127377008303",
+  appId: "1:127377008303:web:6cc5280fe8110d9111d65a",
+  measurementId: "G-TNXP9DFMJR"
+};
+  firebase.initializeApp(firebaseConfig);
+
+  const db = firebase.database().ref();
+  // Initialize Firebase
+
+  // Get a database reference to our blog
+  var ref = firebase.database().ref();
+  //var vall = firebase.database().ref('LED_STATUS');
+  ref.update({"LED_STATUS" : "OFF"});
+  // make the buttons call the function below 
+  document.getElementById('turn-on').addEventListener('click', turnOn, false);
+  document.getElementById('turn-off').addEventListener('click', turnOff, false);
+    document.getElementById('submit').addEventListener('click', submit, false);
+
+
+  ref.on('value', function(snapshot) {
+  var vall = snapshot.val();
+  console.log(vall);
+  //document.getElementById("demo").innerHTML = vall.LED_STATUS;
+});
+  
+  function submit(){
+      var x = document.getElementById("myInput").value;
+  document.getElementById("demo").innerHTML = "You wrote: " + x;
+
+  }
+  function turnOn(){
+    console.log("turning on");
+    ref.update({
+      "LED_STATUS": "ON"
+    });
+  }
+
+  function turnOff(){
+    console.log("turning off");
+    ref.update({
+      "LED_STATUS": "OFF"
+    });
+  } 
+    </script>
+
+</body>
+</code></pre>
+</div>
+  </div>
+</div>
+
+</body>
+</html>

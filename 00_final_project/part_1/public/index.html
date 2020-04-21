@@ -1,0 +1,88 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>PS70</title>
+</head>
+
+<body>
+	<button id="turn-on" name="turnon">Turn On </button>
+	<button id="turn-off" name="turnoff">Turn Off </button>
+	<p id = "demo"></p>
+	<input type="text" id="myInput" oninput="myFunction()">
+	<button id="submit" name="sumbit">submit </button>
+
+
+	<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="/__/firebase/7.14.0/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+    <!-- include only the Firebase features as you need -->
+    <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-database.js"></script>
+    <script defer src="/__/firebase/7.14.0/firebase-auth.js"></script>
+    <script defer src="/__/firebase/7.14.0/firebase-database.js"></script>
+    <script defer src="/__/firebase/7.14.0/firebase-messaging.js"></script>
+    <script defer src="/__/firebase/7.14.0/firebase-storage.js"></script>
+    <!-- initialize the SDK after all desired features are loaded -->
+<script src="/__/firebase/7.14.0/firebase-analytics.js"></script>
+
+<!-- Initialize Firebase -->
+<script defer src="/__/firebase/init.js"></script>
+
+	<script>
+	// Your web app's Firebase configuration
+	const firebaseConfig = {
+  apiKey: "AIzaSyBm7IRrCQpf4A_-Vnqe7vXsQgiIzO-cUoo",
+  authDomain: "esp32-216ab.firebaseapp.com",
+  databaseURL: "https://esp32-216ab.firebaseio.com/",
+  projectId: "esp32-216ab",
+  storageBucket: "esp32-216ab.appspot.com",
+  messagingSenderId: "127377008303",
+  appId: "1:127377008303:web:6cc5280fe8110d9111d65a",
+  measurementId: "G-TNXP9DFMJR"
+};
+	firebase.initializeApp(firebaseConfig);
+
+	const db = firebase.database().ref();
+	// Initialize Firebase
+
+	// Get a database reference to our blog
+	var ref = firebase.database().ref();
+	//var vall = firebase.database().ref('LED_STATUS');
+	ref.update({"LED_STATUS" : "OFF"});
+	// make the buttons call the function below 
+	document.getElementById('turn-on').addEventListener('click', turnOn, false);
+	document.getElementById('turn-off').addEventListener('click', turnOff, false);
+		document.getElementById('submit').addEventListener('click', submit, false);
+
+
+	ref.on('value', function(snapshot) {
+  var vall = snapshot.val();
+  console.log(vall);
+  //document.getElementById("demo").innerHTML = vall.LED_STATUS;
+});
+	
+	function submit(){
+		  var x = document.getElementById("myInput").value;
+  document.getElementById("demo").innerHTML = "You wrote: " + x;
+
+	}
+	function turnOn(){
+		console.log("turning on");
+		ref.update({
+			"LED_STATUS": "ON"
+		});
+	}
+
+	function turnOff(){
+		console.log("turning off");
+		ref.update({
+			"LED_STATUS": "OFF"
+		});
+	}	
+    </script>
+
+</body>
