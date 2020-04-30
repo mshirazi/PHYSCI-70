@@ -15,9 +15,9 @@
   <input type="checkbox" id="nav-toggle" class="nav-toggle">
   <nav>
     <ul>
-      <li><a href="#">Home</a></li>
-      <li><a href="./about.html">About</a></li>
-      <li><a href="./00_final_project/index.html">Final Project</a></li>
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../about.html">About</a></li>
+      <li><a href="../00_final_project/index.html">Final Project</a></li>
     </ul>
   </nav>
   <label for="nav-toggle" class="nav-toggle-label">
@@ -199,6 +199,12 @@ void loop() {
 
 </body>
 </code></pre>
+<p>Also, when I tried to run things in the terminal, I kept getting a firebase - command not found error, but using</p>
+<pre class = "prettyprint"><code>alias firebase="`npm config get prefix`/bin/firebase"
+</code></pre>
+<p>fixed it. Only problem was, I had to copy paste this each time I reopened a terminal window.</p>
+<h2>Click here to see <a href="./part2.html">PART 2</a></h2>
+
 </div>
   </div>
 </div>

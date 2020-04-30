@@ -34,16 +34,16 @@
 
 	<script>
 	// Your web app's Firebase configuration
-	const firebaseConfig = {
-  apiKey: "AIzaSyBm7IRrCQpf4A_-Vnqe7vXsQgiIzO-cUoo",
-  authDomain: "esp32-216ab.firebaseapp.com",
-  databaseURL: "https://esp32-216ab.firebaseio.com/",
-  projectId: "esp32-216ab",
-  storageBucket: "esp32-216ab.appspot.com",
-  messagingSenderId: "127377008303",
-  appId: "1:127377008303:web:6cc5280fe8110d9111d65a",
-  measurementId: "G-TNXP9DFMJR"
-};
+	var firebaseConfig = {
+    apiKey: "AIzaSyAgyv8N0t0Uef3vrGuv3wQ2fOpm5WA27qE",
+    authDomain: "pastamachine-a1af1.firebaseapp.com",
+    databaseURL: "https://pastamachine-a1af1.firebaseio.com",
+    projectId: "pastamachine-a1af1",
+    storageBucket: "pastamachine-a1af1.appspot.com",
+    messagingSenderId: "795329952205",
+    appId: "1:795329952205:web:7651ce03f28534caf76c84",
+    measurementId: "G-47THY5BJ8J"
+  };
 	firebase.initializeApp(firebaseConfig);
 
 	const db = firebase.database().ref();
@@ -68,6 +68,7 @@
 	function submit(){
 		  var x = document.getElementById("myInput").value;
   document.getElementById("demo").innerHTML = "You wrote: " + x;
+  ref.update({"speed" : x});
 
 	}
 	function turnOn(){
