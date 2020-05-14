@@ -175,6 +175,7 @@ void loop() {
  }   //end of loop function.
 </code></pre>
 <p>I realized that essentially the speed was controlled by the delay in the driver board code, and so I needed to have my board communicate an integer for the speed which would then get translated into a delay. I noticed that delays from 2s to 20s spanned the range of speeds that I wanted the stepper to go at (1s isn't enough, and 20s is very slow.) I decided to just use wire transmission, and this way I could even communicate bi-directionality and speed in the same byte, which made things a lot easier.</p>
+<p>I also finalized the pieces in my Fusion 360 design file, especially the pieces that would need to be 3D printed. I used <a href="http://www.jeromeleary.com/gears/"> this awesome tool</a> to generate the gears (there was another one that I tried first that was some MIT software but the teeth were extremely weird and it didn't look feasible. My gear isn't a 'perfect' or 'ideal ' gear, per say, since there aren't very many teeth and the tooth size is large compared to the body. I needed it this way, in order to get the maximum modulus, so that the tooth depth would be as large as possible, since when the top roller shifts the gears will mesh less so there needs to be more room for error. I couldn't find any other mechanisms for this part, unfortunately, and this seems like a very non-ideal solution.</p>
 </div>
   </div>
 </div>

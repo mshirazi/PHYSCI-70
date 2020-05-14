@@ -1,0 +1,162 @@
+	<!doctype html>
+	<html class="no-js" lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="style.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+		<script src="my.js"></script>
+		<link href="Content/bootstrap.css" rel="stylesheet" />
+
+		<script src="Scripts/jquery-1.11.0.min.js"></script>
+		<script src="Scripts/bootstrap.min.js"></script>
+		<title>PS70</title>
+	</head>
+
+	<body>
+		<h1>The Pasta Machine</h1>
+		<div class="container">
+			<div class="row">
+				<div class="column-sm">
+
+
+
+					<br />
+					<br><br>
+					<h1>Roller Speed</h1><br>
+					<div id="up_down">
+						<button id="turn-up" data-answer="true">Up</button>
+						<button id="turn-down" data-answer="false">Down</button>
+					</div>
+					<br>
+					<input id="speed" type="range"  min="1" max="100" value="50" link-to="text_box_name">
+					<br><br>
+					<input type="text" id="text_box_name"> <br><br>
+					<div id="on_off">
+						<button id="turn-on" name="turnon">On </button>
+						<button id="turn-off" name="turnoff">Off </button>
+					</div>
+				</div>
+				<br>
+				<div class="column-sm">
+
+					<h1>Thickness</h1><br>
+					<input id="thickness" type="range"  min="1" max="16" value="8" link-to="text_box_name2">
+					<br><br>
+					<input type="text" id="text_box_name2"> <p>/16''</p><br>
+					<p>Chosen width:</p>
+					<p id="result"><span id="min"></span>/<span id="max"></span>"</p>
+				</div>
+			</div>
+
+			<div class="row">
+				<h1>Presets</h1>
+				<div class="col-sm-6">
+					<h2>Edit&Select Presets</h2>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-6">
+					<table id="productTable"
+					class="table table-bordered table-condensed table-striped">
+					<thead>
+						<tr>
+							<th>Edit</th>
+							<th>Preset Name</th>
+							<th>Thickness (/16")</th>
+							<th>Length (")</th>
+							<th>Delete</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-sm-6">
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						Preset Information
+					</div>
+					<div class="panel-body">
+						<div class="form-group">
+							<label for="presetname">
+								Preset Name
+							</label>
+							<input type="text"
+							class="form-control"
+							value="Preset Name"
+							id="presetname" />
+						</div>
+						<div class="form-group">
+							<label for="preset_thickness">
+								Thickness
+							</label>
+							<input type="number"
+							class="form-control"
+							value="5"
+							id="preset_thickness" />
+						</div>
+						<div class="form-group">
+							<label for="preset_length">
+								Length
+							</label>
+							<input type="number"
+							class="form-control"
+							value="2"
+							id="preset_length" />
+						</div>
+					</div>
+					<div class="panel-footer">
+						<div class="row">
+							<div class="col-xs-12">
+								<button type="button" id="updateButton"
+								class="btn btn-primary"
+								onclick="productUpdate();">Add</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<!-- <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase.js"></script> -->
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-analytics.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-storage.js"></script>
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyAgyv8N0t0Uef3vrGuv3wQ2fOpm5WA27qE",
+    authDomain: "pastamachine-a1af1.firebaseapp.com",
+    databaseURL: "https://pastamachine-a1af1.firebaseio.com",
+    projectId: "pastamachine-a1af1",
+    storageBucket: "pastamachine-a1af1.appspot.com",
+    messagingSenderId: "795329952205",
+    appId: "1:795329952205:web:6b5ade4d8dcc5de2f76c84",
+    measurementId: "G-187H9XBX1Q"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+window.onload=function(){
+
+  document.getElementById('turn-on').addEventListener('click', turnOn, false);
+	document.getElementById('turn-off').addEventListener('click', turnOff, false);
+		document.getElementById('turn-up').addEventListener('click', turnUp, false);
+	document.getElementById('turn-down').addEventListener('click', turnDown, false);
+};
+</script>
+
+</body>
