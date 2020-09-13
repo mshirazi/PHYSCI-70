@@ -88,6 +88,8 @@
         <img src="./final/side.jpg" class="img-responsive margin" style="width: 100%">
         <img src="./final/otherside.jpg" class="img-responsive margin" style="width: 100%">
         <img src="./final/best.jpg" class="img-responsive margin" style="width: 100%">
+                <img src="./final/diagram.png" class="img-responsive margin" style="width: 100%">
+
         <p>There were three codes: one for each of the driver boards and one for the Huzzah.</p>
         <pre class="prettyprint"><code class="language-arduino">
           /*
@@ -553,9 +555,433 @@ document.getElementById('turn-down').addEventListener('click', turnDown, false);
 &lt;/body&gt;
 
 </code></pre>
-<img src="./final/site1.jpg" class="img-responsive margin" style="width: 100%">
-<img src="./final/site2.jpg" class="img-responsive margin" style="width: 100%">
+<p>Here is the JS:</p>
+<pre class="prettyprint"><code class="language-js">
+  var precision = 16;
+var editRow = null;
+window.onload=function(){
+  window.ref = firebase.database().ref();
+}
+
+function reduce(numerator,denominator){
+  var gcd = function gcd(a,b){
+    return b ? gcd(b, a%b) : a;
+  };
+  gcd = gcd(numerator,denominator);
+  return [numerator/gcd, denominator/gcd];
+}
+$(function() {
+  var ref = firebase.database().ref();
+
+  $('input').filter( function(){return this.id == 'speed' } ).each(function(){  
+    var $slider = $(this),
+    $text_box = $('#'+$(this).attr('link-to'));
+    
+    $text_box.val(this.value);
+    
+    $slider.change(function(){
+      $text_box.val(this.value);
+      ref.update({
+        "speed": $text_box.val()
+      });
+    });
+    
+    $text_box.change(function(){
+      $slider.val($text_box.val());
+      ref.update({
+        "speed": $text_box.val()
+      });
+    });
+
+  });
+});
+
+$(function() {
+  $('input').filter( function(){return this.id == 'thickness' } ).each(function(){  
+      var ref = firebase.database().ref();
+
+    var $slider = $(this),
+    $text_box = $('#'+$(this).attr('link-to'));
+    
+    $text_box.val(this.value);
+    document.getElementById("min").innerHTML = 1;
+    document.getElementById("max").innerHTML = 2;
+    $slider.change(function(){
+      $text_box.val(this.value);
+      var val = reduce($text_box.val(), precision);
+      document.getElementById("min").innerHTML = val[0];
+      document.getElementById("max").innerHTML = val[1];
+      ref.update({
+        "thickness": $text_box.val()
+      });
+    });
+    
+    $text_box.change(function(){
+      $slider.val($text_box.val());
+      var val = reduce($text_box.val(), precision);
+      document.getElementById("min").innerHTML = val[0];
+      document.getElementById("max").innerHTML = val[1];
+      ref.update({
+        "thickness": $text_box.val()
+      });
+    });
+
+  });
+});
+
+
+// Reduce a fraction by finding the Greatest Common Divisor and dividing by it.
+
+$(function() {
+  var bindButtons = function(){
+
+    $('#on_off').on('click', 'button', function( e ){
+
+      e.preventDefault();
+
+      $(this)
+      .addClass('selected')
+      .removeClass('disabled')
+      .siblings()
+      .removeClass('selected')
+      .addClass('disabled');
+    });
+
+  };
+
+// Init binding
+bindButtons();
+
+// Get your answer
+var answer = $('#buttons .selected').data('answer');
+});
+
+$(function() {
+  var bindButtons = function(){
+
+    $('#up_down').on('click', 'button', function( e ){
+
+      e.preventDefault();
+
+      $(this)
+      .addClass('selected')
+      .removeClass('disabled')
+      .siblings()
+      .removeClass('selected')
+      .addClass('disabled');
+    });
+
+  };
+
+// Init binding
+bindButtons();
+
+// Get your answer
+var answer = $('#buttons .selected').data('answer');
+});
+
+$(function() {
+  
+
+});
+
+function turnOn(){
+    var ref = firebase.database().ref();
+    console.log("turning on");
+    ref.update({
+      "status": "on"
+    });
+  }
+
+  function turnOff(){
+    var ref = firebase.database().ref();
+    console.log("turning off");
+    ref.update({
+      "status": "off"
+    });
+  } 
+
+  function turnUp(){
+    var ref = firebase.database().ref();
+    console.log("turning up");
+    ref.update({
+      "direction": "up"
+    });
+  }
+
+  function turnDown(){
+    var ref = firebase.database().ref();
+    console.log("turning down");
+    ref.update({
+      "direction": "down"
+    });
+  } 
+
+// Current product being edited
+var editRow = null;
+
+function productDisplay(ctl) {
+  editRow = $(ctl).parents("tr");
+  var cols = editRow.children("td");
+
+  $("#productname").val($(cols[1]).text());
+  $("#introdate").val($(cols[2]).text());
+  $("#url").val($(cols[3]).text());
+
+      // Change Update Button Text
+      $("#updateButton").text("Update");
+  }
+
+function productUpdate() {
+    if ($("#updateButton").text() == "Update") {
+      productUpdateInTable();
+    }
+    else {
+      productAddToTable();
+    }
+
+      // Clear form fields
+      formClear();
+
+      // Focus to product name field
+      $("#productname").focus();
+  }
+
+    // Add product to &lt;table&gt;
+    function productAddToTable() {
+      // First check if a &lt;tbody&gt; tag exists, add one if not
+      if ($("#productTable tbody").length == 0) {
+        $("#productTable").append("&lt;tbody&gt;&lt;/tbody&gt;");
+      }
+
+      // Append product to table
+      $("#productTable tbody").append(
+        productBuildTableRow());
+  }
+
+    // Update product in &lt;table&gt;
+    function productUpdateInTable() {
+      // Add changed product to table
+      $(editRow).after(productBuildTableRow());
+
+      // Remove original product
+      $(editRow).remove();
+
+      // Clear form fields
+      formClear();
+
+      // Change Update Button Text
+      $("#updateButton").text("Add");
+  }
+
+    // Build a &lt;table&gt; row of Product data
+    function productBuildTableRow() {
+      var ret =
+      "&lt;tr&gt;" +
+      "&lt;td&gt;" +
+      "&lt;button type='button' " +
+      "onclick='productDisplay(this);' " +
+      "class='btn btn-default'&gt;" +
+      "&lt;span class='glyphicon glyphicon-edit' /&gt;" +
+      "&lt;/button&gt;" +
+      "&lt;/td&gt;" +
+      "&lt;td&gt;" + $("#productname").val() + "&lt;/td&gt;" +
+      "&lt;td&gt;" + $("#introdate").val() + "&lt;/td&gt;" +
+      "&lt;td&gt;" + $("#url").val() + "&lt;/td&gt;" +
+      "&lt;td&gt;" +
+      "&lt;button type='button' " +
+      "onclick='productDelete(this);' " +
+      "class='btn btn-default'&gt;" +
+      "&lt;span class='glyphicon glyphicon-remove' /&gt;" +
+      "&lt;/button&gt;" +
+      "&lt;/td&gt;" +
+      "&lt;/tr&gt;"
+
+      return ret;
+    }
+
+    // Delete product from &lt;table&gt;
+    function productDelete(ctl) {
+      $(ctl).parents("tr").remove();
+    }
+
+    // Clear form fields
+    function formClear() {
+      $("#productname").val("");
+      $("#introdate").val("");
+      $("#url").val("");
+    }
+
+    function productDisplay(ctl) {
+      editRow = $(ctl).parents("tr");
+      var cols = editRow.children("td");
+
+      $("#presetname").val($(cols[1]).text());
+      $("#preset_thickness").val($(cols[2]).text());
+      $("#preset_length").val($(cols[3]).text());
+
+        // Change Update Button Text
+        $("#updateButton").text("Update");
+    }
+
+    function productUpdate() {
+      if ($("#updateButton").text() == "Update") {
+        productUpdateInTable();
+      }
+      else {
+        productAddToTable();
+      }
+
+        // Clear form fields
+        formClear();
+
+        // Focus to product name field
+        $("#presetname").focus();
+    }
+
+      // Add product to &lt;table&gt;
+      function productAddToTable() {
+        // First check if a &lt;tbody&gt; tag exists, add one if not
+        if ($("#productTable tbody").length == 0) {
+          $("#productTable").append("&lt;tbody&gt;&lt;/tbody&gt;");
+        }
+
+        // Append product to table
+        $("#productTable tbody").append(
+          productBuildTableRow());
+    }
+
+      // Update product in &lt;table&gt;
+      function productUpdateInTable() {
+        // Add changed product to table
+        $(editRow).after(productBuildTableRow());
+
+        // Remove original product
+        $(editRow).remove();
+
+        // Clear form fields
+        formClear();
+
+        // Change Update Button Text
+        $("#updateButton").text("Add");
+    }
+
+
+
+      // Build a &lt;table&gt; row of Product data
+      function productBuildTableRow() {
+        var ret =
+        "&lt;tr&gt;" +
+        "&lt;td&gt;" +
+        "&lt;button type='button' " +
+        "onclick='productDisplay(this);' " +
+        "class='btn btn-default'&gt;" +
+        "&lt;span class='glyphicon glyphicon-edit' /&gt;" +
+        "&lt;/button&gt;" +
+        "&lt;/td&gt;" +
+        "&lt;td&gt;" + $("#presetname").val() + "&lt;/td&gt;" +
+        "&lt;td&gt;" + $("#preset_thickness").val() + "&lt;/td&gt;" +
+        "&lt;td&gt;" + $("#preset_length").val() + "&lt;/td&gt;" +
+        "&lt;td&gt;" +
+        "&lt;button type='button' " +
+        "onclick='productDelete(this);' " +
+        "class='btn btn-default'&gt;" +
+        "&lt;span class='glyphicon glyphicon-remove' /&gt;" +
+        "&lt;/button&gt;" +
+        "&lt;/td&gt;" +
+        "&lt;/tr&gt;"
+
+        return ret;
+      }
+
+      // Delete product from &lt;table&gt;
+      function productDelete(ctl) {
+        $(ctl).parents("tr").remove();
+      }
+
+      // Clear form fields
+      function formClear() {
+        $("#presetname").val("");
+        $("#preset_thickness").val("");
+        $("#preset_length").val("");
+      }
+
+$(function() {
+
+    //const db = firebase.database().ref();
+    // Initialize Firebase
+
+    // Get a database reference to our blog
+    var ref = firebase.database().ref();
+    //var vall = firebase.database().ref('LED_STATUS');
+    ref.update({"LED_STATUS" : "OFF"});
+    ref.update({"status" : "off"});
+    // make the buttons call the function below 
+
+    ref.on('value', function(snapshot) {
+      var vall = snapshot.val();
+      console.log(vall);
+    //document.getElementById("demo").innerHTML = vall.LED_STATUS;
+  });
+  });
+</code></pre>
+<p>Here's the CSS:</p>
+<pre class="prettyprint"><code>
+  input[type=range] {
+  -webkit-appearance: none;
+  width: 100%;
+  height:15px;
+  -webkit-border-radius: 1em;
+  border-radius: 1em;
+
+  -webkit-background-clip: padding;
+  background-clip: padding-box;
+  border: 1px solid #aaa;
+  background: #eee;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 28px;
+  height: 28px;
+  border: 1px solid #044062;
+  background: #396b9e;
+  background-image: linear-gradient(#5f9cc5,#396b9e);
+  -webkit-box-shadow: 0 1px 3px rgba(0,0,0,.2);
+  box-shadow: 0 1px 3px rgba(0,0,0,.2);    
+  cursor: pointer;
+  -webkit-border-radius: 1em;
+  border-radius: 1em;
+  border-top: 1px solid #fff;
+  border-color: rgba(255,255,255,.3);
+}
+
+button {
+    font-size: 0.857em;
+    padding-bottom: 0.167em;
+    border: none;
+    border-radius: 0.500em;
+    height: 1.750em;
+    width: 4.250em;
+    background-color: #EB7E10;
+    color: #FFF;
+    cursor: pointer;
+}
+button.selected {
+    background-color: #F2F2F2;
+    border: 0.083em solid #CDCDCD;
+    color: #666;
+}
+button.disabled {
+    background-color: #FFF;
+    border: 0.083em solid #F2F2F2;
+    color: #D7D7D7;
+}
+</code></pre>
+<img src="./final/site1.png" class="img-responsive margin" style="width: 100%">
+<img src="./final/site2.png" class="img-responsive margin" style="width: 100%">
 <p>Website url: https://pastamachine-a1af1.web.app</p>
+<img src="./final/pasta.jpg" class="img-responsive margin" style="width: 100%">
 
 <h2>Click here to see <a href="./part1.html">PART 1</a></h2>
 </div>
